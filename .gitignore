@@ -32,3 +32,9 @@ Makefile*
 #QtCtreator Qml
 *.qmlproject.user
 *.qmlproject.user.*
+
+/build
+/build-ios
+/build-ios-sim
+/assets
+.DS_Store
