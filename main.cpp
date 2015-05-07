@@ -1,12 +1,14 @@
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
+#include <QApplication>
+
+#include "game.h"
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
 
-    QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    Game * game = new Game();
+
+    game->show();
 
     return app.exec();
 }
