@@ -13,5 +13,8 @@ public:
     QGraphicsScene * scene();
 
 protected:
+    void mousePressEvent(QMouseEvent *event);
+
+protected:
     QGraphicsScene * m_scene;
 };

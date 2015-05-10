@@ -1,7 +1,11 @@
 #include "tile.h"
 
+#include <math.h>
+
 #include <QGraphicsPixmapItem>
+#include <QTouchEvent>
 #include <QVector2D>
+#include <QDebug>
 
 Tile::Tile(Color color, QVector2D position)
     : m_color(color)
@@ -34,6 +38,11 @@ Tile::Tile(Color color, QVector2D position)
 Tile::~Tile()
 {
 
+}
+
+void Tile::mousePressEvent(QGraphicsSceneMouseEvent * )
+{
+    qDebug() << "I am" << m_position.x() << m_position.y();
 }
 
 Color Tile::color() const

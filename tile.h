@@ -21,8 +21,9 @@ public:
     Tile(Color color, QVector2D position);
     ~Tile();
 
-    Color color() const;
+    void mousePressEvent(QGraphicsSceneMouseEvent * event);
 
+    Color color() const;
     void setPosition(QVector2D position);
     QVector2D position() const;
 

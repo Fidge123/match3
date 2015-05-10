@@ -42,3 +42,8 @@ QGraphicsScene * Game::scene()
     return m_scene;
 }
 
+void Game::mousePressEvent(QMouseEvent * event)
+{
+    QGraphicsView::mousePressEvent(event);
+}
+
