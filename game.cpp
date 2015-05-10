@@ -10,7 +10,7 @@ Game::Game()
 {
     setScene(m_scene);
 
-    Grid * grid = new Grid();
+    Grid * grid = new Grid;
 
     QGraphicsPixmapItem * bg = new QGraphicsPixmapItem(QPixmap(":/assets/BackGround.jpg"));
     m_scene->addItem(bg);

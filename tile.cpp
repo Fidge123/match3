@@ -36,17 +36,28 @@ Tile::~Tile()
 
 }
 
-bool Tile::swapWith(Tile tile)
+bool Tile::swapWith(Tile * tile)
 {
+    auto temp_position = tile->position();
+    tile->setPosition(m_position);
+    setPosition(temp_position);
 
+    return true;
+
+    // TODO: Check if legal, remove matched tiles, animate
 }
 
-Color Tile::color()
+Color Tile::color() const
 {
-
+    return m_color;
 }
 
-QVector2D Tile::position()
+void Tile::setPosition(QVector2D position)
 {
+    m_position = position;
+}
 
+QVector2D Tile::position() const
+{
+    return m_position;
 }

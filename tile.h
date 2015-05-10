@@ -21,9 +21,12 @@ public:
     Tile(Color color, QVector2D position);
     ~Tile();
 
-    bool swapWith(Tile tile);
-    Color color();
-    QVector2D position();
+    bool swapWith(Tile * tile);
+
+    Color color() const;
+
+    void setPosition(QVector2D position);
+    QVector2D position() const;
 
 protected:
     Color m_color;

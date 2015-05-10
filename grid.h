@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <QVector2D>
 
 #include "tile.h"
 
@@ -11,10 +12,10 @@ public:
     Grid();
     ~Grid();
 
-    std::vector<Tile *> tiles();
-    Tile & getTileAt(int x, int y);
+    std::vector<Tile *> tiles() const;
 
     void fillGrid();
+    bool removePairs();
 
 protected:
     std::vector<Tile *> m_tiles;
