@@ -15,6 +15,7 @@ public:
     std::vector<Tile *> tiles() const;
 
     void fillGrid();
+    void applyGravity();
     bool removePairs();
 
 protected:

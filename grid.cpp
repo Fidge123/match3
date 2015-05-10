@@ -4,7 +4,6 @@
 #include <time.h>
 
 #include <QVector2D>
-#include <QDebug>
 
 #include "tile.h"
 
@@ -15,13 +14,13 @@ Grid::Grid()
 
     while(removePairs())
     {
+        applyGravity();
         fillGrid();
     }
 }
 
 Grid::~Grid()
 {
-
 }
 
 std::vector<Tile *> Grid::tiles() const
@@ -33,13 +32,39 @@ void Grid::fillGrid()
 {
     srand (time(nullptr));
 
-    for (int x = 0; x < c_height; x++)
+    for (int x = 0; x < c_width; x++)
     {
-        for (int y = 0; y < c_width; y++)
+        for (int y = 0; y < c_height; y++)
         {
-            if (m_tiles.at(x * c_height + y) == nullptr)
+            if (m_tiles.at(x * c_width + y) == nullptr)
             {
-                m_tiles[x * c_height + y] = new Tile(Color(rand() % 5), QVector2D(x, y));
+                m_tiles[x * c_width + y] = new Tile(Color(rand() % 5), QVector2D(x, y));
+            }
+        }
+    }
+}
+
+void Grid::applyGravity()
+{
+    bool hasFloatingTiles = false;
+
+    while (!hasFloatingTiles)
+    {
+        hasFloatingTiles = true;
+
+        for (int x = 0; x < c_width; x++)
+        {
+            for (int y = 1; y < c_height; y++)
+            {
+                if (m_tiles.at(x * c_width + y) == nullptr &&
+                    m_tiles.at(x * c_width + y - 1) != nullptr)
+                {
+                    m_tiles.at(x * c_width + y - 1)->setPosition(QVector2D(x, y));
+                    m_tiles[x * c_width + y] = m_tiles[x * c_width + y - 1];
+                    m_tiles[x * c_width + y - 1] = nullptr;
+
+                    hasFloatingTiles = false;
+                }
             }
         }
     }
@@ -47,17 +72,23 @@ void Grid::fillGrid()
 
 bool Grid::removePairs()
 {
-    for (int x = 0; x < c_height; x++)
+    for (int x = 0; x < c_width; x++)
     {
-        for (int y = 0; y < c_width; y++)
+        for (int y = 0; y < c_height; y++)
         {
             int xCounter = 1;
             int yCounter = 1;
 
-            for (int i = 1; i + x < c_height; i++)
+            for (int i = 1; i + x < c_width; i++)
             {
-                auto my_color = m_tiles.at(x * c_height + y)->color();
-                auto other_color = m_tiles.at((x + i) * c_height + y)->color();
+                if (m_tiles.at(x * c_width + y) == nullptr ||
+                    m_tiles.at((x + i) * c_width + y) == nullptr)
+                {
+                    break;
+                }
+
+                auto my_color = m_tiles.at(x * c_width + y)->color();
+                auto other_color = m_tiles.at((x + i) * c_width + y)->color();
 
                 if (my_color == other_color)
                 {
@@ -69,10 +100,16 @@ bool Grid::removePairs()
                 }
             }
 
-            for (int i = 1; i + y < c_width; i++)
+            for (int i = 1; i + y < c_height; i++)
             {
-                auto my_color = m_tiles.at(x * c_height + y)->color();
-                auto other_color = m_tiles.at(x * c_height + y + i)->color();
+                if (m_tiles.at(x * c_width + y) == nullptr ||
+                    m_tiles.at(x * c_width + y + i) == nullptr)
+                {
+                    break;
+                }
+
+                auto my_color = m_tiles.at(x * c_width + y)->color();
+                auto other_color = m_tiles.at(x * c_width + y + i)->color();
 
                 if (my_color == other_color)
                 {
@@ -88,7 +125,7 @@ bool Grid::removePairs()
             {
                 for (int i = 0; i < xCounter; i++)
                 {
-                    m_tiles[(x + i) * c_height + y] = nullptr;
+                    m_tiles[(x + i) * c_width + y] = nullptr;
                 }
                 return true;
             }
@@ -97,7 +134,7 @@ bool Grid::removePairs()
             {
                 for (int i = 0; i < yCounter; i++)
                 {
-                    m_tiles[x * c_height + y + i] = nullptr;
+                    m_tiles[x * c_width + y + i] = nullptr;
                 }
                 return true;
             }

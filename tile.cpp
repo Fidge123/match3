@@ -5,8 +5,10 @@
 
 Tile::Tile(Color color, QVector2D position)
     : m_color(color)
-    , m_position(position)
 {
+    QGraphicsItem::setAcceptTouchEvents(true);
+    setPosition(position);
+
     switch (color)
     {
     case Color::BLUE:
@@ -27,24 +29,11 @@ Tile::Tile(Color color, QVector2D position)
     default:
         break;
     }
-
-    setPos(position.x() * 42 + 330, position.y() * 42 + 105);
 }
 
 Tile::~Tile()
 {
 
-}
-
-bool Tile::swapWith(Tile * tile)
-{
-    auto temp_position = tile->position();
-    tile->setPosition(m_position);
-    setPosition(temp_position);
-
-    return true;
-
-    // TODO: Check if legal, remove matched tiles, animate
 }
 
 Color Tile::color() const
@@ -55,6 +44,7 @@ Color Tile::color() const
 void Tile::setPosition(QVector2D position)
 {
     m_position = position;
+    setPos(position.x() * 42 + 330, position.y() * 42 + 105);
 }
 
 QVector2D Tile::position() const

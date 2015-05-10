@@ -21,8 +21,6 @@ public:
     Tile(Color color, QVector2D position);
     ~Tile();
 
-    bool swapWith(Tile * tile);
-
     Color color() const;
 
     void setPosition(QVector2D position);
