@@ -6,5 +6,10 @@
         <file>assets/Purple.png</file>
         <file>assets/Red.png</file>
         <file>assets/Yellow.png</file>
+        <file>assets/BlueHL.png</file>
+        <file>assets/GreenHL.png</file>
+        <file>assets/PurpleHL.png</file>
+        <file>assets/RedHL.png</file>
+        <file>assets/YellowHL.png</file>
     </qresource>
 </RCC>

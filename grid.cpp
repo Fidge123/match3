@@ -24,9 +24,11 @@ void Grid::setSelectedTile(Tile * tile)
     if (m_selectedTile == nullptr)
     {
         m_selectedTile = tile;
+        tile->setIsSelected(true);
     }
     else
     {
+        m_selectedTile->setIsSelected(false);
         swap(m_selectedTile, tile);
         m_selectedTile = nullptr;
     }
