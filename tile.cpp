@@ -1,6 +1,6 @@
 #include "tile.h"
 
-#include <math.h>
+#include <cmath>
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsSceneMouseEvent>
@@ -66,17 +66,17 @@ void Tile::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
             m_grid->swapRight(this);
         }
         else if (m_pressedPos.x() - event->pos().x() > 32 &&
-            abs(m_pressedPos.x() - event->pos().x()) > abs(m_pressedPos.y() - event->pos().y()))
+            std::abs(m_pressedPos.x() - event->pos().x()) > std::abs(m_pressedPos.y() - event->pos().y()))
         {
             m_grid->swapLeft(this);
         }
         else if (m_pressedPos.y() - event->pos().y() < 0 &&
-            abs(m_pressedPos.x() - event->pos().x()) < abs(m_pressedPos.y() - event->pos().y()))
+            std::abs(m_pressedPos.x() - event->pos().x()) < std::abs(m_pressedPos.y() - event->pos().y()))
         {
             m_grid->swapDown(this);
         }
         else if (m_pressedPos.y() - event->pos().y() > 32 &&
-            abs(m_pressedPos.x() - event->pos().x()) < abs(m_pressedPos.y() - event->pos().y()))
+            std::abs(m_pressedPos.x() - event->pos().x()) < std::abs(m_pressedPos.y() - event->pos().y()))
         {
             m_grid->swapUp(this);
         }
