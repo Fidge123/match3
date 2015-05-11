@@ -3,25 +3,30 @@
 #include <cmath>
 
 #include <QGraphicsPixmapItem>
+#include <QPropertyAnimation>
 #include <QGraphicsSceneMouseEvent>
-#include <QTouchEvent>
 #include <QVector2D>
+#include <QPointF>
 #include <QDebug>
 
 #include <grid.h>
 
 Tile::Tile(Color color, QVector2D position, Grid * grid)
     : m_grid(grid)
+    , m_position(position)
+    , m_animation(new QPropertyAnimation(this, "pos"))
     , m_isSelected(false)
 {
     QGraphicsItem::setAcceptTouchEvents(true);
+
+    setPos(position.x() * 42 + 330, 90);
     setPosition(position);
     setColor(color);
 }
 
 Tile::~Tile()
 {
-
+    delete m_animation;
 }
 
 void Tile::mousePressEvent(QGraphicsSceneMouseEvent * event)
@@ -138,6 +143,10 @@ QVector2D Tile::position() const
 
 void Tile::setPosition(QVector2D position)
 {
+    m_animation->setDuration((std::abs(position.x() - m_position.x()) + std::abs(position.y() - m_position.y())) * 300 + 1000);
+    m_animation->setStartValue(pos());
+    m_animation->setEndValue(QPointF(position.x() * 42 + 330, position.y() * 42 + 105));
+    m_animation->start();
+
     m_position = position;
-    setPos(position.x() * 42 + 330, position.y() * 42 + 105);
 }
