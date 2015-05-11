@@ -12,10 +12,10 @@ Game::Game()
 {
     setScene(m_scene);
 
-    Grid * grid = new Grid;
-
     QGraphicsPixmapItem * bg = new QGraphicsPixmapItem(QPixmap(":/assets/BackGround.jpg"));
     m_scene->addItem(bg);
+
+    Grid * grid = new Grid(this);
 
     QGraphicsTextItem * score = new QGraphicsTextItem("Score: 0");
     score->setScale(4);
@@ -23,13 +23,13 @@ Game::Game()
     score->setPos(50, 50);
     m_scene->addItem(score);
 
-    for (auto tile : grid->tiles())
+    /*for (auto tile : grid->tiles())
     {
         if (tile != nullptr)
         {
             m_scene->addItem(tile);
         }
-    }
+    }*/
 }
 
 Game::~Game()

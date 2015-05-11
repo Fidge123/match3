@@ -6,10 +6,12 @@
 #include <QVector2D>
 #include <QDebug>
 
+#include "game.h"
 #include "tile.h"
 
-Grid::Grid()
+Grid::Grid(Game * game)
     : m_selectedTile(nullptr)
+    , m_game(game)
 {
     m_tiles.resize(c_height * c_width);
     fillGrid();
@@ -91,6 +93,7 @@ void Grid::fillGrid()
             if (m_tiles.at(x * c_width + y) == nullptr)
             {
                 m_tiles[x * c_width + y] = new Tile(Color(rand() % 5), QVector2D(x, y), this);
+                m_game->scene()->addItem(m_tiles[x * c_width + y]);
             }
         }
     }

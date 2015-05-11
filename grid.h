@@ -5,11 +5,13 @@
 
 #include "tile.h"
 
+class Game;
+
 class Grid
 {
 
 public:
-    Grid();
+    Grid(Game * game);
     ~Grid();
 
     void setSelectedTile(Tile * tile);
@@ -25,6 +27,7 @@ public:
 protected:
     std::vector<Tile *> m_tiles;
     Tile * m_selectedTile;
+    Game * m_game;
     int c_height = 8;
     int c_width = 8;
 };
