@@ -44,16 +44,22 @@ bool Grid::swap(Tile * t1, Tile * t2)
     auto pos2 = t2->position();
 
     m_tiles[pos1.x() * c_width + pos1.y()] = t2;
-    t2->setPosition(pos2);
+    t2->setPosition(pos1);
 
     m_tiles[pos2.x() * c_width + pos2.y()] = t1;
-    t1->setPosition(pos1);
+    t1->setPosition(pos2);
 
-    if(removePairs())
+    bool isValid = false;
+
+    while (removePairs())
     {
+        isValid = true;
         applyGravity();
         fillGrid();
-        qDebug() << "Removing Pairs and filling";
+    }
+
+    if (isValid)
+    {
         return true;
     }
     else
@@ -171,6 +177,7 @@ bool Grid::removePairs()
             {
                 for (int i = 0; i < xCounter; i++)
                 {
+                    delete m_tiles[(x + i) * c_width + y];
                     m_tiles[(x + i) * c_width + y] = nullptr;
                 }
                 return true;
@@ -180,6 +187,7 @@ bool Grid::removePairs()
             {
                 for (int i = 0; i < yCounter; i++)
                 {
+                    delete m_tiles[x * c_width + y + i];
                     m_tiles[x * c_width + y + i] = nullptr;
                 }
                 return true;
