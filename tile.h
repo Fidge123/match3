@@ -1,9 +1,12 @@
 #pragma once
 
 #include <QVector2D>
+#include <QPointF>
 #include <QGraphicsPixmapItem>
 
 class QGraphicsItem;
+
+class Grid;
 
 enum class Color
 {
@@ -18,15 +21,19 @@ class Tile : public QGraphicsPixmapItem
 {
 
 public:
-    Tile(Color color, QVector2D position);
+    Tile(Color color, QVector2D position, Grid * grid = nullptr);
     ~Tile();
 
-    Color color() const;
+    void mousePressEvent(QGraphicsSceneMouseEvent * event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
 
+    Color color() const;
     void setPosition(QVector2D position);
     QVector2D position() const;
 
 protected:
     Color m_color;
+    Grid * m_grid;
+    QPointF m_pressedPos;
     QVector2D m_position;
 };
