@@ -3,6 +3,7 @@
 #include <math.h>
 
 #include <QGraphicsPixmapItem>
+#include <QGraphicsSceneMouseEvent>
 #include <QTouchEvent>
 #include <QVector2D>
 #include <QDebug>
@@ -43,9 +44,43 @@ Tile::~Tile()
 
 }
 
-void Tile::mousePressEvent(QGraphicsSceneMouseEvent * )
+void Tile::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-    m_grid->setSelectedTile(this);
+    m_pressedPos = event->pos();
+}
+
+void Tile::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
+{
+    if (0 < event->pos().x() &&
+        event->pos().x() < 32 &&
+        0 < event->pos().y() &&
+        event->pos().y() < 32)
+    {
+        m_grid->setSelectedTile(this);
+    }
+    else
+    {
+        if (m_pressedPos.x() - event->pos().x() < 0 &&
+            abs(m_pressedPos.x() - event->pos().x()) > abs(m_pressedPos.y() - event->pos().y()))
+        {
+            m_grid->swapRight(this);
+        }
+        else if (m_pressedPos.x() - event->pos().x() > 32 &&
+            abs(m_pressedPos.x() - event->pos().x()) > abs(m_pressedPos.y() - event->pos().y()))
+        {
+            m_grid->swapLeft(this);
+        }
+        else if (m_pressedPos.y() - event->pos().y() < 0 &&
+            abs(m_pressedPos.x() - event->pos().x()) < abs(m_pressedPos.y() - event->pos().y()))
+        {
+            m_grid->swapDown(this);
+        }
+        else if (m_pressedPos.y() - event->pos().y() > 32 &&
+            abs(m_pressedPos.x() - event->pos().x()) < abs(m_pressedPos.y() - event->pos().y()))
+        {
+            m_grid->swapUp(this);
+        }
+    }
 }
 
 Color Tile::color() const

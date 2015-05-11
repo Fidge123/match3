@@ -68,6 +68,26 @@ bool Grid::swap(Tile * t1, Tile * t2)
     }
 }
 
+bool Grid::swapUp(Tile *t)
+{
+    return swap(t, m_tiles[t->position().x()][t->position().y() - 1]);
+}
+
+bool Grid::swapDown(Tile *t)
+{
+    return swap(t, m_tiles[t->position().x()][t->position().y() + 1]);
+}
+
+bool Grid::swapLeft(Tile *t)
+{
+    return swap(t, m_tiles[t->position().x() - 1][t->position().y()]);
+}
+
+bool Grid::swapRight(Tile *t)
+{
+    return swap(t, m_tiles[t->position().x() + 1][t->position().y()]);
+}
+
 void Grid::initializeTiles()
 {
     for (unsigned int x = 0; x < c_width; x++)

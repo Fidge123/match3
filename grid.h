@@ -17,6 +17,10 @@ public:
     void setSelectedTile(Tile * tile);
 
     bool swap(Tile * t1, Tile * t2);
+    bool swapUp(Tile * t);
+    bool swapDown(Tile * t);
+    bool swapLeft(Tile * t);
+    bool swapRight(Tile * t);
 
 protected:
     void initializeTiles();

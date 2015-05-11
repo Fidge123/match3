@@ -15,7 +15,8 @@ public:
     void setScore(int score);
 
 protected:
-    void mousePressEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent * event);
+    void mouseReleaseEvent(QMouseEvent * event);
 
 protected:
     QGraphicsScene * m_scene;

@@ -53,3 +53,8 @@ void Game::mousePressEvent(QMouseEvent * event)
     QGraphicsView::mousePressEvent(event);
 }
 
+void Game::mouseReleaseEvent(QMouseEvent * event)
+{
+    QGraphicsView::mouseReleaseEvent(event);
+}
+

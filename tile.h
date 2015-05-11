@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QVector2D>
+#include <QPointF>
 #include <QGraphicsPixmapItem>
 
 class QGraphicsItem;
@@ -24,6 +25,7 @@ public:
     ~Tile();
 
     void mousePressEvent(QGraphicsSceneMouseEvent * event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
 
     Color color() const;
     void setPosition(QVector2D position);
@@ -32,5 +34,6 @@ public:
 protected:
     Color m_color;
     Grid * m_grid;
+    QPointF m_pressedPos;
     QVector2D m_position;
 };
