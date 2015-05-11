@@ -19,7 +19,7 @@ Tile::Tile(Color color, QVector2D position, Grid * grid)
 {
     QGraphicsItem::setAcceptTouchEvents(true);
 
-    setPos(position.x() * 42 + 330, 90);
+    setPos(position.x() * 42 + 330, position.y() * 42 + 105);
     setPosition(position);
     setColor(color);
 }
@@ -143,7 +143,7 @@ QVector2D Tile::position() const
 
 void Tile::setPosition(QVector2D position)
 {
-    m_animation->setDuration((std::abs(position.x() - m_position.x()) + std::abs(position.y() - m_position.y())) * 300 + 1000);
+    m_animation->setDuration(500);
     m_animation->setStartValue(pos());
     m_animation->setEndValue(QPointF(position.x() * 42 + 330, position.y() * 42 + 105));
     m_animation->start();

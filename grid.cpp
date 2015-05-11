@@ -116,16 +116,21 @@ void Grid::fillGrid()
 {
     srand (time(nullptr));
 
-    for (unsigned int x = 0; x < m_tiles.size(); x++)
+    bool isFull = false;
+
+    while (!isFull)
     {
-        for (unsigned int y = 0; y < m_tiles[x].size(); y++)
+        isFull = true;
+        for (unsigned int x = 0; x < m_tiles.size(); x++)
         {
-            if (m_tiles[x][y] == nullptr)
+            if (m_tiles[x][0] == nullptr)
             {
-                m_tiles[x][y] = new Tile(Color(rand() % 5), QVector2D(x, y), this);
-                m_game->scene()->addItem(m_tiles[x][y]);
+                m_tiles[x][0] = new Tile(Color(rand() % 5), QVector2D(x, 0), this);
+                m_game->scene()->addItem(m_tiles[x][0]);
+                isFull = false;
             }
         }
+        applyGravity();
     }
 }
 
@@ -145,6 +150,8 @@ void Grid::applyGravity()
                     m_tiles[x][y - 1] != nullptr)
                 {
                     m_tiles[x][y - 1]->setPosition(QVector2D(x, y));
+
+                    // swap m_tiles[x][y] (which equals nullptr) and m_tiles[x][y-1]
                     m_tiles[x][y] = m_tiles[x][y - 1];
                     m_tiles[x][y - 1] = nullptr;
 
@@ -164,7 +171,7 @@ bool Grid::removePairs(bool enableScoring)
             int xCounter = 1;
             int yCounter = 1;
 
-            for (unsigned int i = 1; i + x < m_tiles.size(); i++)
+            for (unsigned int i = 1; x + i < m_tiles.size(); i++)
             {
                 if (m_tiles[x][y] == nullptr ||
                     m_tiles[x + i][y] == nullptr)
@@ -185,7 +192,7 @@ bool Grid::removePairs(bool enableScoring)
                 }
             }
 
-            for (unsigned int i = 1; i + y < m_tiles[x].size(); i++)
+            for (unsigned int i = 1; y + i < m_tiles[x].size(); i++)
             {
                 if (m_tiles[x][y] == nullptr ||
                     m_tiles[x][y + i] == nullptr)
