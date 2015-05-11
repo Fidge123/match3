@@ -18,16 +18,16 @@ public:
 
     bool swap(Tile * t1, Tile * t2);
 
-    std::vector<Tile *> tiles() const;
-
+protected:
+    void initializeTiles();
     void fillGrid();
     void applyGravity();
-    bool removePairs();
+    bool removePairs(bool enableScoring);
 
 protected:
-    std::vector<Tile *> m_tiles;
+    std::vector<std::vector<Tile *>> m_tiles;
     Tile * m_selectedTile;
     Game * m_game;
-    int c_height = 8;
-    int c_width = 8;
+    unsigned int c_height = 8;
+    unsigned int c_width = 8;
 };

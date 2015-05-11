@@ -4,7 +4,6 @@
 #include <time.h>
 
 #include <QVector2D>
-#include <QDebug>
 
 #include "game.h"
 #include "tile.h"
@@ -13,14 +12,7 @@ Grid::Grid(Game * game)
     : m_selectedTile(nullptr)
     , m_game(game)
 {
-    m_tiles.resize(c_height * c_width);
-    fillGrid();
-
-    while(removePairs())
-    {
-        applyGravity();
-        fillGrid();
-    }
+    initializeTiles();
 }
 
 Grid::~Grid()
@@ -45,15 +37,15 @@ bool Grid::swap(Tile * t1, Tile * t2)
     auto pos1 = t1->position();
     auto pos2 = t2->position();
 
-    m_tiles[pos1.x() * c_width + pos1.y()] = t2;
+    m_tiles[pos1.x()][pos1.y()] = t2;
     t2->setPosition(pos1);
 
-    m_tiles[pos2.x() * c_width + pos2.y()] = t1;
+    m_tiles[pos2.x()][pos2.y()] = t1;
     t1->setPosition(pos2);
 
     bool isValid = false;
 
-    while (removePairs())
+    while (removePairs(true))
     {
         isValid = true;
         applyGravity();
@@ -66,34 +58,50 @@ bool Grid::swap(Tile * t1, Tile * t2)
     }
     else
     {
-        m_tiles[pos2.x() * c_width + pos2.y()] = t2;
+        m_tiles[pos2.x()][pos2.y()] = t2;
         t2->setPosition(pos2);
 
-        m_tiles[pos1.x() * c_width + pos1.y()] = t1;
+        m_tiles[pos1.x()][pos1.y()] = t1;
         t1->setPosition(pos1);
 
-        qDebug() << "Nope";
         return false;
     }
 }
 
-std::vector<Tile *> Grid::tiles() const
+void Grid::initializeTiles()
 {
-    return m_tiles;
+    for (unsigned int x = 0; x < c_width; x++)
+    {
+        std::vector<Tile *> empty;
+        for (unsigned int y = 0; y < c_height; y++)
+        {
+            empty.push_back(nullptr);
+        }
+
+        m_tiles.push_back(empty);
+    }
+
+    fillGrid();
+
+    while(removePairs(false))
+    {
+        applyGravity();
+        fillGrid();
+    }
 }
 
 void Grid::fillGrid()
 {
     srand (time(nullptr));
 
-    for (int x = 0; x < c_width; x++)
+    for (unsigned int x = 0; x < m_tiles.size(); x++)
     {
-        for (int y = 0; y < c_height; y++)
+        for (unsigned int y = 0; y < m_tiles[x].size(); y++)
         {
-            if (m_tiles.at(x * c_width + y) == nullptr)
+            if (m_tiles[x][y] == nullptr)
             {
-                m_tiles[x * c_width + y] = new Tile(Color(rand() % 5), QVector2D(x, y), this);
-                m_game->scene()->addItem(m_tiles[x * c_width + y]);
+                m_tiles[x][y] = new Tile(Color(rand() % 5), QVector2D(x, y), this);
+                m_game->scene()->addItem(m_tiles[x][y]);
             }
         }
     }
@@ -101,49 +109,49 @@ void Grid::fillGrid()
 
 void Grid::applyGravity()
 {
-    bool hasFloatingTiles = false;
+    bool hasFloatingTiles = true;
 
-    while (!hasFloatingTiles)
+    while (hasFloatingTiles)
     {
-        hasFloatingTiles = true;
+        hasFloatingTiles = false;
 
-        for (int x = 0; x < c_width; x++)
+        for (unsigned int x = 0; x < m_tiles.size(); x++)
         {
-            for (int y = 1; y < c_height; y++)
+            for (unsigned int y = 1; y < m_tiles[x].size(); y++)
             {
-                if (m_tiles.at(x * c_width + y) == nullptr &&
-                    m_tiles.at(x * c_width + y - 1) != nullptr)
+                if (m_tiles[x][y] == nullptr &&
+                    m_tiles[x][y - 1] != nullptr)
                 {
-                    m_tiles.at(x * c_width + y - 1)->setPosition(QVector2D(x, y));
-                    m_tiles[x * c_width + y] = m_tiles[x * c_width + y - 1];
-                    m_tiles[x * c_width + y - 1] = nullptr;
+                    m_tiles[x][y - 1]->setPosition(QVector2D(x, y));
+                    m_tiles[x][y] = m_tiles[x][y - 1];
+                    m_tiles[x][y - 1] = nullptr;
 
-                    hasFloatingTiles = false;
+                    hasFloatingTiles = true;
                 }
             }
         }
     }
 }
 
-bool Grid::removePairs()
+bool Grid::removePairs(bool enableScoring)
 {
-    for (int x = 0; x < c_width; x++)
+    for (unsigned int x = 0; x < m_tiles.size(); x++)
     {
-        for (int y = 0; y < c_height; y++)
+        for (unsigned int y = 0; y < m_tiles[x].size(); y++)
         {
             int xCounter = 1;
             int yCounter = 1;
 
-            for (int i = 1; i + x < c_width; i++)
+            for (unsigned int i = 1; i + x < m_tiles.size(); i++)
             {
-                if (m_tiles.at(x * c_width + y) == nullptr ||
-                    m_tiles.at((x + i) * c_width + y) == nullptr)
+                if (m_tiles[x][y] == nullptr ||
+                    m_tiles[x + i][y] == nullptr)
                 {
                     break;
                 }
 
-                auto my_color = m_tiles.at(x * c_width + y)->color();
-                auto other_color = m_tiles.at((x + i) * c_width + y)->color();
+                auto my_color = m_tiles[x][y]->color();
+                auto other_color = m_tiles[x + i][y]->color();
 
                 if (my_color == other_color)
                 {
@@ -155,16 +163,16 @@ bool Grid::removePairs()
                 }
             }
 
-            for (int i = 1; i + y < c_height; i++)
+            for (unsigned int i = 1; i + y < m_tiles[x].size(); i++)
             {
-                if (m_tiles.at(x * c_width + y) == nullptr ||
-                    m_tiles.at(x * c_width + y + i) == nullptr)
+                if (m_tiles[x][y] == nullptr ||
+                    m_tiles[x][y + i] == nullptr)
                 {
                     break;
                 }
 
-                auto my_color = m_tiles.at(x * c_width + y)->color();
-                auto other_color = m_tiles.at(x * c_width + y + i)->color();
+                auto my_color = m_tiles[x][y]->color();
+                auto other_color = m_tiles[x][y + i]->color();
 
                 if (my_color == other_color)
                 {
@@ -180,9 +188,13 @@ bool Grid::removePairs()
             {
                 for (int i = 0; i < xCounter; i++)
                 {
-                    m_game->scene()->removeItem(m_tiles[(x + i) * c_width + y]);
-                    m_tiles[(x + i) * c_width + y] = nullptr;
-                    m_game->setScore(m_game->score() + 1);
+                    m_game->scene()->removeItem(m_tiles[x + i][y]);
+                    m_tiles[x + i][y] = nullptr;
+
+                    if (enableScoring)
+                    {
+                        m_game->setScore(m_game->score() + 1);
+                    }
                 }
                 return true;
             }
@@ -191,9 +203,13 @@ bool Grid::removePairs()
             {
                 for (int i = 0; i < yCounter; i++)
                 {
-                    m_game->scene()->removeItem(m_tiles[x * c_width + y + i]);
-                    m_tiles[x * c_width + y + i] = nullptr;
-                    m_game->setScore(m_game->score() + 1);
+                    m_game->scene()->removeItem(m_tiles[x][y + i]);
+                    m_tiles[x][y + i] = nullptr;
+
+                    if (enableScoring)
+                    {
+                        m_game->setScore(m_game->score() + 1);
+                    }
                 }
                 return true;
             }

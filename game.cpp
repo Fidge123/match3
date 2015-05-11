@@ -25,14 +25,6 @@ Game::Game()
     score->setDefaultTextColor(QColor(255, 255, 255));
     score->setPos(50, 50);
     m_scene->addItem(score);
-
-    /*for (auto tile : grid->tiles())
-    {
-        if (tile != nullptr)
-        {
-            m_scene->addItem(tile);
-        }
-    }*/
 }
 
 Game::~Game()
