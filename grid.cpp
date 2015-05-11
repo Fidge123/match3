@@ -4,10 +4,12 @@
 #include <time.h>
 
 #include <QVector2D>
+#include <QDebug>
 
 #include "tile.h"
 
 Grid::Grid()
+    : m_selectedTile(nullptr)
 {
     m_tiles.resize(c_height * c_width);
     fillGrid();
@@ -21,6 +23,50 @@ Grid::Grid()
 
 Grid::~Grid()
 {
+}
+
+void Grid::setSelectedTile(Tile * tile)
+{
+    if (m_selectedTile == nullptr)
+    {
+        m_selectedTile = tile;
+    }
+    else
+    {
+        swap(m_selectedTile, tile);
+        m_selectedTile = nullptr;
+    }
+}
+
+bool Grid::swap(Tile * t1, Tile * t2)
+{
+    auto pos1 = t1->position();
+    auto pos2 = t2->position();
+
+    m_tiles[pos1.x() * c_width + pos1.y()] = t2;
+    t2->setPosition(pos2);
+
+    m_tiles[pos2.x() * c_width + pos2.y()] = t1;
+    t1->setPosition(pos1);
+
+    if(removePairs())
+    {
+        applyGravity();
+        fillGrid();
+        qDebug() << "Removing Pairs and filling";
+        return true;
+    }
+    else
+    {
+        m_tiles[pos2.x() * c_width + pos2.y()] = t2;
+        t2->setPosition(pos2);
+
+        m_tiles[pos1.x() * c_width + pos1.y()] = t1;
+        t1->setPosition(pos1);
+
+        qDebug() << "Nope";
+        return false;
+    }
 }
 
 std::vector<Tile *> Grid::tiles() const
@@ -38,7 +84,7 @@ void Grid::fillGrid()
         {
             if (m_tiles.at(x * c_width + y) == nullptr)
             {
-                m_tiles[x * c_width + y] = new Tile(Color(rand() % 5), QVector2D(x, y));
+                m_tiles[x * c_width + y] = new Tile(Color(rand() % 5), QVector2D(x, y), this);
             }
         }
     }

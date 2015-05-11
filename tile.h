@@ -5,6 +5,8 @@
 
 class QGraphicsItem;
 
+class Grid;
+
 enum class Color
 {
     BLUE = 0,
@@ -18,7 +20,7 @@ class Tile : public QGraphicsPixmapItem
 {
 
 public:
-    Tile(Color color, QVector2D position);
+    Tile(Color color, QVector2D position, Grid * grid = nullptr);
     ~Tile();
 
     void mousePressEvent(QGraphicsSceneMouseEvent * event);
@@ -29,5 +31,6 @@ public:
 
 protected:
     Color m_color;
+    Grid * m_grid;
     QVector2D m_position;
 };

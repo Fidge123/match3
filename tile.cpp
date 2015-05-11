@@ -7,8 +7,11 @@
 #include <QVector2D>
 #include <QDebug>
 
-Tile::Tile(Color color, QVector2D position)
+#include <grid.h>
+
+Tile::Tile(Color color, QVector2D position, Grid * grid)
     : m_color(color)
+    , m_grid(grid)
 {
     QGraphicsItem::setAcceptTouchEvents(true);
     setPosition(position);
@@ -42,7 +45,7 @@ Tile::~Tile()
 
 void Tile::mousePressEvent(QGraphicsSceneMouseEvent * )
 {
-    qDebug() << "I am" << m_position.x() << m_position.y();
+    m_grid->setSelectedTile(this);
 }
 
 Color Tile::color() const
