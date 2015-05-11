@@ -4,11 +4,14 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>
 
+#include <QDebug>
+
 #include "tile.h"
 #include "grid.h"
 
 Game::Game()
     : m_scene(new QGraphicsScene(this))
+    , m_score(0)
 {
     setScene(m_scene);
 
@@ -40,6 +43,17 @@ Game::~Game()
 QGraphicsScene * Game::scene()
 {
     return m_scene;
+}
+
+int Game::score()
+{
+    return m_score;
+}
+
+void Game::setScore(int score)
+{
+    m_score = score;
+    qDebug() << "Score:" << score;
 }
 
 void Game::mousePressEvent(QMouseEvent * event)

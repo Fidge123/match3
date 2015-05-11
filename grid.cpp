@@ -180,8 +180,9 @@ bool Grid::removePairs()
             {
                 for (int i = 0; i < xCounter; i++)
                 {
-                    delete m_tiles[(x + i) * c_width + y];
+                    m_game->scene()->removeItem(m_tiles[(x + i) * c_width + y]);
                     m_tiles[(x + i) * c_width + y] = nullptr;
+                    m_game->setScore(m_game->score() + 1);
                 }
                 return true;
             }
@@ -190,8 +191,9 @@ bool Grid::removePairs()
             {
                 for (int i = 0; i < yCounter; i++)
                 {
-                    delete m_tiles[x * c_width + y + i];
+                    m_game->scene()->removeItem(m_tiles[x * c_width + y + i]);
                     m_tiles[x * c_width + y + i] = nullptr;
+                    m_game->setScore(m_game->score() + 1);
                 }
                 return true;
             }
