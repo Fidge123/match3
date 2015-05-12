@@ -11,7 +11,5 @@ int main(int argc, char *argv[])
 
     game->show();
 
-    QTimer::singleShot(60000, &app, SLOT(quit()));
-
     return app.exec();
 }

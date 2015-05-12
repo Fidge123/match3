@@ -18,6 +18,13 @@ Grid::Grid(Game * game)
 
 Grid::~Grid()
 {
+    for (auto row : m_tiles)
+    {
+        for (auto tile : row)
+        {
+            m_game->scene()->removeItem(tile);
+        }
+    }
 }
 
 void Grid::setSelectedTile(Tile * tile)
