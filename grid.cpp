@@ -4,6 +4,7 @@
 #include <time.h>
 
 #include <QVector2D>
+#include <QDebug>
 
 #include "game.h"
 #include "tile.h"
@@ -114,7 +115,7 @@ void Grid::initializeTiles()
 
 void Grid::fillGrid()
 {
-    srand (time(nullptr));
+    srand (time(nullptr) * m_game->score());
 
     bool isFull = false;
 
@@ -215,6 +216,7 @@ bool Grid::removePairs(bool enableScoring)
 
             if (xCounter >= 3)
             {
+                //qDebug() << "Removing" << xCounter << "tiles right of" << x << y;
                 for (int i = 0; i < xCounter; i++)
                 {
                     m_game->scene()->removeItem(m_tiles[x + i][y]);
@@ -230,6 +232,7 @@ bool Grid::removePairs(bool enableScoring)
 
             if (yCounter >= 3)
             {
+                //qDebug() << "Removing" << yCounter << "tiles below" << x << y;
                 for (int i = 0; i < yCounter; i++)
                 {
                     m_game->scene()->removeItem(m_tiles[x][y + i]);
