@@ -27,7 +27,7 @@ Game::Game()
     button->setGeometry(80, 200, 80, 40);
     m_scene->addWidget(button);
 
-    connect(button, SIGNAL(pressed()), this, SLOT(start()));
+    connect(button, SIGNAL(clicked()), this, SLOT(start()));
 
     m_timer->setInterval(1000);
     connect(m_timer, SIGNAL(timeout()), this, SLOT(updateTimerDisplay()));
