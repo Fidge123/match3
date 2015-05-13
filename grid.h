@@ -32,6 +32,4 @@ protected:
     std::vector<std::vector<Tile *>> m_tiles;
     Tile * m_selectedTile;
     Game * m_game;
-    unsigned int c_height = 8;
-    unsigned int c_width = 8;
 };

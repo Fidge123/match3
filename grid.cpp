@@ -9,6 +9,9 @@
 #include "game.h"
 #include "tile.h"
 
+static constexpr unsigned int s_width = 8;
+static constexpr unsigned int s_height = 8;
+
 Grid::Grid(Game * game)
     : m_selectedTile(nullptr)
     , m_game(game)
@@ -100,10 +103,10 @@ bool Grid::swapRight(Tile *t)
 
 void Grid::initializeTiles()
 {
-    for (unsigned int x = 0; x < c_width; x++)
+    for (unsigned int x = 0; x < s_width; x++)
     {
         std::vector<Tile *> empty;
-        for (unsigned int y = 0; y < c_height; y++)
+        for (unsigned int y = 0; y < s_height; y++)
         {
             empty.push_back(nullptr);
         }
@@ -223,7 +226,6 @@ bool Grid::removePairs(bool enableScoring)
 
             if (xCounter >= 3)
             {
-                //qDebug() << "Removing" << xCounter << "tiles right of" << x << y;
                 for (int i = 0; i < xCounter; i++)
                 {
                     m_game->scene()->removeItem(m_tiles[x + i][y]);
@@ -239,7 +241,6 @@ bool Grid::removePairs(bool enableScoring)
 
             if (yCounter >= 3)
             {
-                //qDebug() << "Removing" << yCounter << "tiles below" << x << y;
                 for (int i = 0; i < yCounter; i++)
                 {
                     m_game->scene()->removeItem(m_tiles[x][y + i]);
