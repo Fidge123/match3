@@ -1,11 +1,9 @@
 #pragma once
 
 #include <vector>
-#include <QVector2D>
-
-#include "tile.h"
 
 class Game;
+class Tile;
 
 class Grid
 {

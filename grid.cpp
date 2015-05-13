@@ -4,7 +4,6 @@
 #include <time.h>
 
 #include <QPointF>
-#include <QDebug>
 
 #include "game.h"
 #include "tile.h"

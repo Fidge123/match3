@@ -6,9 +6,8 @@
 #include <QPropertyAnimation>
 #include <QGraphicsSceneMouseEvent>
 #include <QPointF>
-#include <QDebug>
 
-#include <grid.h>
+#include "grid.h"
 
 Tile::Tile(Color color, QPointF position, Grid * grid)
     : m_grid(grid)
