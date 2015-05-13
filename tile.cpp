@@ -5,17 +5,17 @@
 #include <QGraphicsPixmapItem>
 #include <QPropertyAnimation>
 #include <QGraphicsSceneMouseEvent>
-#include <QVector2D>
 #include <QPointF>
 #include <QDebug>
 
 #include <grid.h>
 
-Tile::Tile(Color color, QVector2D position, Grid * grid)
+Tile::Tile(Color color, QPointF position, Grid * grid)
     : m_grid(grid)
     , m_position(position)
     , m_animation(new QPropertyAnimation(this, "pos"))
     , m_isSelected(false)
+    , m_isMoving(false)
 {
     QGraphicsItem::setAcceptTouchEvents(true);
 
@@ -45,25 +45,27 @@ void Tile::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
     }
     else
     {
-        if (m_pressedPos.x() - event->pos().x() < 0 &&
-            abs(m_pressedPos.x() - event->pos().x()) > abs(m_pressedPos.y() - event->pos().y()))
+        if (abs(m_pressedPos.x() - event->pos().x()) > abs(m_pressedPos.y() - event->pos().y()))
         {
-            m_grid->swapRight(this);
+            if (m_pressedPos.x() < event->pos().x())
+            {
+                m_grid->swapRight(this);
+            }
+            else
+            {
+                m_grid->swapLeft(this);
+            }
         }
-        else if (m_pressedPos.x() - event->pos().x() > 32 &&
-            std::abs(m_pressedPos.x() - event->pos().x()) > std::abs(m_pressedPos.y() - event->pos().y()))
+        else
         {
-            m_grid->swapLeft(this);
-        }
-        else if (m_pressedPos.y() - event->pos().y() < 0 &&
-            std::abs(m_pressedPos.x() - event->pos().x()) < std::abs(m_pressedPos.y() - event->pos().y()))
-        {
-            m_grid->swapDown(this);
-        }
-        else if (m_pressedPos.y() - event->pos().y() > 32 &&
-            std::abs(m_pressedPos.x() - event->pos().x()) < std::abs(m_pressedPos.y() - event->pos().y()))
-        {
-            m_grid->swapUp(this);
+            if (m_pressedPos.y() < event->pos().y())
+            {
+                m_grid->swapDown(this);
+            }
+            else
+            {
+                m_grid->swapUp(this);
+            }
         }
     }
 }
@@ -121,28 +123,27 @@ bool Tile::isSelected()
 
 void Tile::setIsSelected(bool selected)
 {
-    if (m_isSelected != selected)
+    if (selected)
     {
-        if (selected)
-        {
-            setColor(Color(static_cast<int>(color()) + 5));
-        }
-        else
-        {
-            setColor(Color(static_cast<int>(color()) - 5));
-        }
-
-        m_isSelected = selected;
+        setColor(Color(static_cast<int>(color()) + 5));
     }
+    else
+    {
+        setColor(Color(static_cast<int>(color()) - 5));
+    }
+
+    m_isSelected = selected;
 }
 
-QVector2D Tile::position() const
+QPointF Tile::position() const
 {
     return m_position;
 }
 
-void Tile::setPosition(QVector2D position)
+void Tile::setPosition(QPointF position)
 {
+    m_isMoving = true;
+
     m_animation->setDuration(500);
     m_animation->setStartValue(pos());
     m_animation->setEndValue(QPointF(position.x() * 42 + 330, position.y() * 42 + 105));

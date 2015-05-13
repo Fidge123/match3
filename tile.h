@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QVector2D>
 #include <QPointF>
 #include <QObject>
 #include <QGraphicsPixmapItem>
@@ -28,7 +27,7 @@ class Tile : public QObject, public QGraphicsPixmapItem
     Q_PROPERTY(QPointF pos READ pos WRITE setPos)
 
 public:
-    Tile(Color color, QVector2D position, Grid * grid = nullptr);
+    Tile(Color color, QPointF position, Grid * grid = nullptr);
     ~Tile();
 
     void mousePressEvent(QGraphicsSceneMouseEvent * event);
@@ -38,16 +37,17 @@ public:
     void setColor(Color color);
     bool isSelected();
     void setIsSelected(bool selected);
-    QVector2D position() const;
-    void setPosition(QVector2D position);
+    QPointF position() const;
+    void setPosition(QPointF position);
 
 protected:
     Grid * m_grid;
 
-    QVector2D m_position;
+    QPointF m_position;
     QPropertyAnimation * m_animation;
     Color m_color;
     bool m_isSelected;
+    bool m_isMoving;
 
     QPointF m_pressedPos;
 };

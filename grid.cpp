@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include <QVector2D>
+#include <QPointF>
 #include <QDebug>
 
 #include "game.h"
@@ -81,22 +81,22 @@ bool Grid::swap(Tile * t1, Tile * t2)
     }
 }
 
-bool Grid::swapUp(Tile *t)
+bool Grid::swapUp(Tile * t)
 {
     return swap(t, m_tiles[t->position().x()][t->position().y() - 1]);
 }
 
-bool Grid::swapDown(Tile *t)
+bool Grid::swapDown(Tile * t)
 {
     return swap(t, m_tiles[t->position().x()][t->position().y() + 1]);
 }
 
-bool Grid::swapLeft(Tile *t)
+bool Grid::swapLeft(Tile * t)
 {
     return swap(t, m_tiles[t->position().x() - 1][t->position().y()]);
 }
 
-bool Grid::swapRight(Tile *t)
+bool Grid::swapRight(Tile * t)
 {
     return swap(t, m_tiles[t->position().x() + 1][t->position().y()]);
 }
@@ -116,7 +116,7 @@ void Grid::initializeTiles()
 
     fillGrid();
 
-    while(removePairs(false))
+    while (removePairs(false))
     {
         applyGravity();
         fillGrid();
@@ -125,7 +125,7 @@ void Grid::initializeTiles()
 
 void Grid::fillGrid()
 {
-    srand (time(nullptr) * m_game->score());
+    srand(time(nullptr) * m_game->score());
 
     bool isFull = false;
 
@@ -136,7 +136,7 @@ void Grid::fillGrid()
         {
             if (m_tiles[x][0] == nullptr)
             {
-                m_tiles[x][0] = new Tile(Color(rand() % 5), QVector2D(x, 0), this);
+                m_tiles[x][0] = new Tile(Color(rand() % 5), QPointF(x, 0), this);
                 m_game->scene()->addItem(m_tiles[x][0]);
                 isFull = false;
             }
@@ -160,7 +160,7 @@ void Grid::applyGravity()
                 if (m_tiles[x][y] == nullptr &&
                     m_tiles[x][y - 1] != nullptr)
                 {
-                    m_tiles[x][y - 1]->setPosition(QVector2D(x, y));
+                    m_tiles[x][y - 1]->setPosition(QPointF(x, y));
 
                     // swap m_tiles[x][y] (which equals nullptr) and m_tiles[x][y-1]
                     m_tiles[x][y] = m_tiles[x][y - 1];
