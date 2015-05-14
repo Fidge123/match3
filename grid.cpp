@@ -51,33 +51,40 @@ bool Grid::swap(Tile * t1, Tile * t2)
     auto pos1 = t1->position();
     auto pos2 = t2->position();
 
-    m_tiles[pos1.x()][pos1.y()] = t2;
-    t2->setPosition(pos1);
-
-    m_tiles[pos2.x()][pos2.y()] = t1;
-    t1->setPosition(pos2);
-
-    bool isValid = false;
-
-    while (removePairs())
+    if (abs(pos1.x() - pos2.x()) + abs(pos1.y() - pos2.y()) <= 1)
     {
-        isValid = true;
-        applyGravity();
-        fillGrid();
-    }
+        m_tiles[pos1.x()][pos1.y()] = t2;
+        t2->setPosition(pos1);
 
-    if (isValid)
-    {
-        return true;
+        m_tiles[pos2.x()][pos2.y()] = t1;
+        t1->setPosition(pos2);
+
+        bool isValid = false;
+
+        while (removePairs())
+        {
+            isValid = true;
+            applyGravity();
+            fillGrid();
+        }
+
+        if (isValid)
+        {
+            return true;
+        }
+        else
+        {
+            m_tiles[pos2.x()][pos2.y()] = t2;
+            t2->setPosition(pos2);
+
+            m_tiles[pos1.x()][pos1.y()] = t1;
+            t1->setPosition(pos1);
+
+            return false;
+        }
     }
     else
     {
-        m_tiles[pos2.x()][pos2.y()] = t2;
-        t2->setPosition(pos2);
-
-        m_tiles[pos1.x()][pos1.y()] = t1;
-        t1->setPosition(pos1);
-
         return false;
     }
 }
