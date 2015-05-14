@@ -14,7 +14,6 @@ Tile::Tile(Color color, QPointF position, Grid * grid)
     , m_position(position)
     , m_animation(new QPropertyAnimation(this, "pos"))
     , m_isSelected(false)
-    , m_isMoving(false)
 {
     QGraphicsItem::setAcceptTouchEvents(true);
 
@@ -141,8 +140,6 @@ QPointF Tile::position() const
 
 void Tile::setPosition(QPointF position)
 {
-    m_isMoving = true;
-
     m_animation->setDuration(500);
     m_animation->setStartValue(pos());
     m_animation->setEndValue(QPointF(position.x() * 42 + 330, position.y() * 42 + 105));

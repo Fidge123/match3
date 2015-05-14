@@ -6,6 +6,7 @@
 class QGraphicsScene;
 class QGraphicsTextItem;
 class QTimer;
+
 class Grid;
 
 class Game : public QGraphicsView

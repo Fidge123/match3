@@ -7,7 +7,6 @@ class Tile;
 
 class Grid
 {
-
 public:
     Grid(Game * game);
     ~Grid();

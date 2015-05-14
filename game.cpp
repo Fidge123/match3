@@ -20,13 +20,12 @@ Game::Game()
 {
     setScene(m_scene);
 
-    QGraphicsPixmapItem * bg = new QGraphicsPixmapItem(QPixmap(":/assets/BackGround.jpg"));
+    auto bg = new QGraphicsPixmapItem(QPixmap(":/assets/BackGround.jpg"));
     m_scene->addItem(bg);
 
-    QPushButton * button = new QPushButton("Start");
+    auto button = new QPushButton("Start");
     button->setGeometry(80, 200, 80, 40);
     m_scene->addWidget(button);
-
     connect(button, SIGNAL(clicked()), this, SLOT(start()));
 
     m_timer->setInterval(1000);
@@ -47,7 +46,7 @@ Game::Game()
 
 Game::~Game()
 {
-
+    delete m_scene;
 }
 
 void Game::start()

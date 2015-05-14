@@ -102,10 +102,10 @@ bool Grid::swapRight(Tile * t)
 
 void Grid::initializeTiles()
 {
-    for (unsigned int x = 0; x < s_width; x++)
+    for (auto x = 0; x < s_width; x++)
     {
         std::vector<Tile *> empty;
-        for (unsigned int y = 0; y < s_height; y++)
+        for (auto y = 0; y < s_height; y++)
         {
             empty.push_back(nullptr);
         }
@@ -131,7 +131,7 @@ void Grid::fillGrid()
     while (!isFull)
     {
         isFull = true;
-        for (unsigned int x = 0; x < m_tiles.size(); x++)
+        for (auto x = 0; x < m_tiles.size(); x++)
         {
             if (m_tiles[x][0] == nullptr)
             {
@@ -152,9 +152,9 @@ void Grid::applyGravity()
     {
         hasFloatingTiles = false;
 
-        for (unsigned int x = 0; x < m_tiles.size(); x++)
+        for (auto x = 0; x < m_tiles.size(); x++)
         {
-            for (unsigned int y = 1; y < m_tiles[x].size(); y++)
+            for (auto y = 1; y < m_tiles[x].size(); y++)
             {
                 if (m_tiles[x][y] == nullptr &&
                     m_tiles[x][y - 1] != nullptr)
@@ -174,14 +174,14 @@ void Grid::applyGravity()
 
 bool Grid::removePairs(bool enableScoring)
 {
-    for (unsigned int x = 0; x < m_tiles.size(); x++)
+    for (auto x = 0; x < m_tiles.size(); x++)
     {
-        for (unsigned int y = 0; y < m_tiles[x].size(); y++)
+        for (auto y = 0; y < m_tiles[x].size(); y++)
         {
             int xCounter = 1;
             int yCounter = 1;
 
-            for (unsigned int i = 1; x + i < m_tiles.size(); i++)
+            for (auto i = 1; x + i < m_tiles.size(); i++)
             {
                 if (m_tiles[x][y] == nullptr ||
                     m_tiles[x + i][y] == nullptr)
@@ -202,7 +202,7 @@ bool Grid::removePairs(bool enableScoring)
                 }
             }
 
-            for (unsigned int i = 1; y + i < m_tiles[x].size(); i++)
+            for (auto i = 1; y + i < m_tiles[x].size(); i++)
             {
                 if (m_tiles[x][y] == nullptr ||
                     m_tiles[x][y + i] == nullptr)
@@ -223,9 +223,10 @@ bool Grid::removePairs(bool enableScoring)
                 }
             }
 
+            //FIXME
             if (xCounter >= 3)
             {
-                for (int i = 0; i < xCounter; i++)
+                for (auto i = 0; i < xCounter; i++)
                 {
                     m_game->scene()->removeItem(m_tiles[x + i][y]);
                     m_tiles[x + i][y] = nullptr;
@@ -240,7 +241,7 @@ bool Grid::removePairs(bool enableScoring)
 
             if (yCounter >= 3)
             {
-                for (int i = 0; i < yCounter; i++)
+                for (auto i = 0; i < yCounter; i++)
                 {
                     m_game->scene()->removeItem(m_tiles[x][y + i]);
                     m_tiles[x][y + i] = nullptr;

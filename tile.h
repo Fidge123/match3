@@ -4,8 +4,9 @@
 #include <QObject>
 #include <QGraphicsPixmapItem>
 
-class Grid;
 class QPropertyAnimation;
+
+class Grid;
 
 enum class Color
 {
@@ -14,6 +15,7 @@ enum class Color
     PURPLE = 2,
     RED = 3,
     YELLOW = 4,
+
     BLUE_HL = 5,
     GREEN_HL = 6,
     PURPLE_HL = 7,
@@ -47,7 +49,5 @@ protected:
     QPropertyAnimation * m_animation;
     Color m_color;
     bool m_isSelected;
-    bool m_isMoving;
-
     QPointF m_pressedPos;
 };
