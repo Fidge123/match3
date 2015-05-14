@@ -102,10 +102,10 @@ bool Grid::swapRight(Tile * t)
 
 void Grid::initializeTiles()
 {
-    for (auto x = 0; x < s_width; x++)
+    for (auto x = 0U; x < s_width; x++)
     {
         std::vector<Tile *> empty;
-        for (auto y = 0; y < s_height; y++)
+        for (auto y = 0U; y < s_height; y++)
         {
             empty.push_back(nullptr);
         }
@@ -131,7 +131,7 @@ void Grid::fillGrid()
     while (!isFull)
     {
         isFull = true;
-        for (auto x = 0; x < m_tiles.size(); x++)
+        for (auto x = 0U; x < m_tiles.size(); x++)
         {
             if (m_tiles[x][0] == nullptr)
             {
@@ -152,9 +152,9 @@ void Grid::applyGravity()
     {
         hasFloatingTiles = false;
 
-        for (auto x = 0; x < m_tiles.size(); x++)
+        for (auto x = 0U; x < m_tiles.size(); x++)
         {
-            for (auto y = 1; y < m_tiles[x].size(); y++)
+            for (auto y = 1U; y < m_tiles[x].size(); y++)
             {
                 if (m_tiles[x][y] == nullptr &&
                     m_tiles[x][y - 1] != nullptr)
@@ -174,14 +174,14 @@ void Grid::applyGravity()
 
 bool Grid::removePairs(bool enableScoring)
 {
-    for (auto x = 0; x < m_tiles.size(); x++)
+    for (auto x = 0U; x < m_tiles.size(); x++)
     {
-        for (auto y = 0; y < m_tiles[x].size(); y++)
+        for (auto y = 0U; y < m_tiles[x].size(); y++)
         {
             int xCounter = 1;
             int yCounter = 1;
 
-            for (auto i = 1; x + i < m_tiles.size(); i++)
+            for (auto i = 1U; x + i < m_tiles.size(); i++)
             {
                 if (m_tiles[x][y] == nullptr ||
                     m_tiles[x + i][y] == nullptr)
@@ -202,7 +202,7 @@ bool Grid::removePairs(bool enableScoring)
                 }
             }
 
-            for (auto i = 1; y + i < m_tiles[x].size(); i++)
+            for (auto i = 1U; y + i < m_tiles[x].size(); i++)
             {
                 if (m_tiles[x][y] == nullptr ||
                     m_tiles[x][y + i] == nullptr)
