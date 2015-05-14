@@ -23,10 +23,11 @@ protected:
     void initializeTiles();
     void fillGrid();
     void applyGravity();
-    bool removePairs(bool enableScoring);
+    bool removePairs();
 
 protected:
     std::vector<std::vector<Tile *>> m_tiles;
     Tile * m_selectedTile;
     Game * m_game;
+    bool m_scoringEnabled;
 };

@@ -14,8 +14,10 @@ static constexpr unsigned int s_height = 8;
 Grid::Grid(Game * game)
     : m_selectedTile(nullptr)
     , m_game(game)
+    , m_scoringEnabled(false)
 {
     initializeTiles();
+    m_scoringEnabled = true;
 }
 
 Grid::~Grid()
@@ -57,7 +59,7 @@ bool Grid::swap(Tile * t1, Tile * t2)
 
     bool isValid = false;
 
-    while (removePairs(true))
+    while (removePairs())
     {
         isValid = true;
         applyGravity();
@@ -115,7 +117,7 @@ void Grid::initializeTiles()
 
     fillGrid();
 
-    while (removePairs(false))
+    while (removePairs())
     {
         applyGravity();
         fillGrid();
@@ -124,7 +126,7 @@ void Grid::initializeTiles()
 
 void Grid::fillGrid()
 {
-    srand(time(nullptr) * m_game->score());
+    srand(time(nullptr) - m_game->score());
 
     bool isFull = false;
 
@@ -172,7 +174,7 @@ void Grid::applyGravity()
     }
 }
 
-bool Grid::removePairs(bool enableScoring)
+bool Grid::removePairs()
 {
     for (auto x = 0U; x < m_tiles.size(); x++)
     {
@@ -223,7 +225,6 @@ bool Grid::removePairs(bool enableScoring)
                 }
             }
 
-            //FIXME
             if (xCounter >= 3)
             {
                 for (auto i = 0; i < xCounter; i++)
@@ -231,7 +232,7 @@ bool Grid::removePairs(bool enableScoring)
                     m_game->scene()->removeItem(m_tiles[x + i][y]);
                     m_tiles[x + i][y] = nullptr;
 
-                    if (enableScoring)
+                    if (m_scoringEnabled)
                     {
                         m_game->setScore(m_game->score() + 1);
                     }
@@ -246,7 +247,7 @@ bool Grid::removePairs(bool enableScoring)
                     m_game->scene()->removeItem(m_tiles[x][y + i]);
                     m_tiles[x][y + i] = nullptr;
 
-                    if (enableScoring)
+                    if (m_scoringEnabled)
                     {
                         m_game->setScore(m_game->score() + 1);
                     }
